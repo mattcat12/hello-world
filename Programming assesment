@@ -1,0 +1,131 @@
+using System;
+using System.Xml;
+interface ICodeInterface
+{
+void func(int n);
+void func(int n, int p, int q);
+void fib(int start, int length);	
+void fiber(int start, int length); 
+bool IsValidXml(string xmlInput);
+void xmlChecker(string xmlInput);
+}
+public class ServiceClass:ICodeInterface 
+{
+public void func(int n)
+{
+int x; 
+		for(x=1;x<=n;x++)
+		{
+			if(x%5==0)
+			{
+				if(x%7==0) Console.WriteLine("Hello World");
+				else Console.WriteLine("Hello");
+			}
+			if(x%7==0) Console.WriteLine("World");
+			else Console.WriteLine(x);
+		}	
+}
+public void func(int n,int p, int q)
+{
+int x; 
+		for(x=1;x<=n;x++)
+		{
+			if(x%p==0)
+			{
+				if(x%q==0) Console.WriteLine("Hello World");
+				else Console.WriteLine("Hello");
+			}
+			if(x%q==0) Console.WriteLine("World");
+			else Console.WriteLine(x);
+		}	
+}
+    
+int holder;
+public void fib(int start, int length)   
+	{
+		if( 0<length)
+		{
+			Console.WriteLine(start);
+			length--;
+			int holder2=start;
+			start=start+holder;
+			if (holder==0)
+			{
+				Console.WriteLine(start);
+				start=start*2;
+				length--;
+			}	
+			holder=holder2;
+			fib(start, length);
+		}	
+			
+			
+	}	
+public void fiber(int start, int length)
+{
+
+	fib(start, length);
+}
+
+public bool IsValidXml(string xmlInput)
+{
+	using (System.Xml.XmlTextReader xmlTextReader = new XmlTextReader(xmlInput))
+	{
+		try
+		{
+			while (xmlTextReader.Read()) ;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+public void xmlChecker(string xmlInput)
+{
+string result = "";
+ if (xmlInput==null) Console.WriteLine("no xml detected");
+ else 
+{
+  	result=(IsValidXml(xmlInput))? "wellformed!" : "errors dedected" ;
+	Console.WriteLine(result);
+}
+}
+
+public void Main()
+{
+	Console.WriteLine("What Function would you like to use");
+	int x1=Int32.Parse(Console.ReadLine());
+	switch(x1)
+	{
+	case 1:
+	Console.WriteLine("n=?");
+	int x2=Int32.Parse(Console.ReadLine());
+	func(x2);
+	break;
+	case 2:
+	Console.WriteLine("n=?");
+	int x3=Int32.Parse(Console.ReadLine());
+	Console.WriteLine("p=?");
+	int x4=Int32.Parse(Console.ReadLine());
+	Console.WriteLine("q=?");
+	int x5=Int32.Parse(Console.ReadLine());
+	func(x3,x4,x5);
+	break;
+	case 3:
+	Console.WriteLine("start=?");
+	int x6=Int32.Parse(Console.ReadLine());
+	Console.WriteLine("length=?");
+	int x7=Int32.Parse(Console.ReadLine());
+	fib(x6,x7);
+	break;
+	case 4:
+	Console.WriteLine("xml file or path");
+	string xml=Console.ReadLine();
+	xmlChecker(xml);
+	break;
+	}
+}
+}
