@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>document</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+     
+</head>
+<body>
+  <p>
+  
+    <button id="back" onclick="goBack()">BACK</button>
+    <button id="forward" onclick="goForward()">FORWARD</button>
+  
+      </p>
+<table class="table">
+  <thead>
+  <tr>
+      <th>TERM</th>
+      <th>SLUG</th>
+      <th>DATA ACT</th>
+      <th>PLAIN</th>
+      <th>OFFICIAL</th>
+      <th>RESOURCES</th>  
+  </tr>
+    </thead>
+    <tbody id="resultstable"></tbody>
+  </table>
+<script type="text/javascript">
+      var links='https://api.usaspending.gov/api/v2/references/glossary/?limit=20';
+      var pageIndex=1;
+      $(document).ready(function () {
+      GetBindData()
+         
+    });
+    
+    function goBack(){
+      if(prev)pageIndex=pageIndex-1;
+      links=links+'&page='+pageIndex
+      $("#resultstable tr").remove(); 
+      GetBindData();
+    }
+    function goForward(){
+      if(next)pageIndex=pageIndex+1;
+      links=links+'&page='+pageIndex
+      $("#resultstable tr").remove(); 
+      GetBindData();
+
+        }
+    function GetBindData() {
+        $.ajax({
+            url: links,
+            method: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (result)
+            {              
+              prev=result.page_metadata.hasPrevious;
+              next=result.page_metadata.hasNext;
+              BindDataToTable(result);
+            },
+        })
+    }
+    function BindDataToTable(data)
+    {
+      var a='account'.bold();
+      var A="Account".bold();
+            for (var i = 0; i < data.results.length; i++) {
+                var tablerow = "<tr>"
+                              + "<td>" + data.results[i].term + "</td>"
+                              + "<td>" + data.results[i].slug + "</td>"
+                              + "<td>" + data.results[i].data_act_term + "</td>"
+                              + "<td>" + data.results[i].plain + "</td>"
+                              + "<td>" + data.results[i].official + "</td>"
+                              + "<td>" + data.results[i].resources + "</td>"
+                              + "</tr>";
+                     $("#resultstable").append(tablerow);
+                        };
+      for(var v=0;v<resultstable.rows.length;v++){
+        for(var c=0; c< resultstable.rows[v].cells.length;c++){ 
+ resultstable.rows[v].cells[c].innerHTML=resultstable.rows[v].cells[c].innerHTML.replaceAll('Account',A)
+ resultstable.rows[v].cells[c].innerHTML=resultstable.rows[v].cells[c].innerHTML.replaceAll("account",a)      
+        }
+            };
+    }
+</script>
+</body>

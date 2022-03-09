@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - final no error</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<html>
+<head>
+<style>
+  header{ 
+  background-color: DarkSalmon
+  }
+  img {
+    float: center;
+    padding:auto;
+    width:980px;
+    object-fit: cover;
+   
+}
+  
+ footer {
+   float:center;
+   text-align:center;
+   white-space: nowrap;
+   background-color: DarkSalmon;
+   font-size:50px;
+}
+</style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="header" style="text-align:center">
+  <img src=https://public.storysoft.io/Logo%400.25x.png alt=storysoftlogo>
+</div>
+  <br>
+  <br>
+  <p>
+  
+    <br>
+    <button id="back"  onclick="goBack()">BACK</button>
+    <button id="forward" onclick="goForward()">FORWARD</button>
+ <div>
+</div>     
+  </p>
+  <div id='top'></div>
+<table class="table">
+  <thead>
+  <tr>
+  </tr>
+    </thead>
+    <tbody id="resultstable"></tbody>
+  </table>
+<script type="text/javascript">
+    
+  
+ 
+      var links='https://api.usaspending.gov/api/v2/references/glossary/?limit=20';
+      var pageIndex=1;
+      $(document).ready(function () {
+      GetBindData()
+         
+    });
+    
+    function goBack(){
+      if(prev)pageIndex=pageIndex-1;
+      links=links+'&page='+pageIndex
+      while(top1.firstChild)top1.removeChild(top1.firstChild)
+      GetBindData();
+    }
+    function goForward(){
+      if(next)pageIndex=pageIndex+1;
+      links=links+'&page='+pageIndex
+     while(top1.firstChild)top1.removeChild(top1.firstChild)
+      GetBindData();
+        }
+    function GetBindData() {
+        $.ajax({
+            url: links,
+            method: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (result)
+            {              
+              prev=result.page_metadata.hasPrevious;
+              next=result.page_metadata.hasNext;
+              BindDataToTable(result);
+            },
+        })
+    }
+    top1=document.createElement("div")
+    document.body.appendChild(top1)
+    function BindDataToTable(data)
+    {
+      var TextBox = document.createElement("card-text");
+     
+      
+      TextBox.style.fontWeight='bold';
+       TextBox.innerHTML="Account";
+       var TextBox2 = document.createElement("card-text");
+      
+      TextBox2.style.fontWeight='bold';
+      TextBox2.innerHTML="account";
+    
+              // var br=[];
+               var topper=[];
+               var rowcard=[];
+               var cardcol=[];
+               var card=[];
+               var cardbody=[];
+               var cardtitle=[];
+               var cardtext=[];
+               var titleText=[];
+               var bodyText=[];
+               //answers=[data.results[i].term];
+               sections=['term','slug','data_act','plain','official','resources']
+               titles=['TERM','SLUG','DATA ACT','PLAIN',	'OFFICIAL','RESOURCES']
+      //top1.appendChild(rowcard[0])
+      for (var i = 0; i < data.results.length; i++) {
+       
+               //br[i]=document.write('<br>') 
+        //topper[i]=document.createElement("div")
+       // if(i==0)top1.appendChild(topper[0]);
+        rowcard[i]=document.createElement('div')
+               rowcard[i].classList.add('card-group')
+                     //answers=//[data.results[i].term,data.results[i].slug,data.results[i].data_act,data.results[i].plain,data.results[i].official,data.results[i].resources];
+                 var tablerow = "<tr>"
+                              + "<td>" + data.results[i].term + "</td>"
+                              + "<td>" + data.results[i].slug + "</td>"
+                              + "<td>" + data.results[i].data_act_term + "</td>"
+                              + "<td>" + data.results[i].plain + "</td>"
+                              + "<td>" + data.results[i].official + "</td>"
+                              + "<td>" + data.results[i].resources + "</td>"
+                              + "</tr>";
+                               $("#resultstable").append(tablerow);
+
+               for(var g=0; g<6;g++){
+               var l=6*i+g;
+                     resultstable.rows[i].cells[g].innerHTML=resultstable.rows[i].cells[g].innerHTML.replaceAll('Account',TextBox.innerHTML)
+resultstable.rows[i].cells[g].innerHTML=resultstable.rows[i].cells[g].innerHTML.replaceAll("account",TextBox2.innerHTML)  
+             // topper[i]=document.createElement("div")
+              
+              bodyText[l]=document.createTextNode(resultstable.rows[i].cells[g].innerHTML)
+               cardcol[l]=document.createElement("div")
+               cardcol[l].classList.add('col-sm-6');
+               card[l]=document.createElement("div")
+               card[l].classList.add('card')
+               cardbody[l]=document.createElement("div")
+               cardbody[l].classList.add('card-body');
+               cardtitle[l]=document.createElement("h")
+               cardtitle[l].classList.add('card-title')
+               cardtext[l]=document.createElement('p')
+               cardtext[l].classList.add('class-text')       
+              titleText[l]=document.createTextNode(titles[g%6])
+               top1.appendChild(rowcard[i]);
+               rowcard[i].appendChild(cardcol[l])
+               cardcol[l].appendChild(card[l])
+               card[l].appendChild(cardbody[l])
+               cardbody[l].appendChild(cardtitle[l])
+               cardtitle[l].appendChild(titleText[l]);
+               cardtitle[l].appendChild(cardtext[l])
+               cardtext[l].appendChild(bodyText[l])  
+              // bodyText[l].appendChild(topper[i+1])
+               // top1.appendChild(rowcard[i])
+                  
+               }
+  
+       
+      }  
+        $("#resultstable tr").remove(); 
+    }
+      $("#resultstable tr").remove(); 
+  function getTextWidth(text, font) {
+    // if given, use cached canvas for better performance
+    // else, create new canvas
+    var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+    var context = canvas.getContext("2d");
+    context.font = font;
+    var metrics = context.measureText(text);
+    return metrics.width;
+};
+
+function getTextWidthDOM(text, font) {
+  var f = font || '12px arial',
+      o = $('<span>' + text + '</span>')
+            .css({'font': f, 'float': 'left', 'white-space': 'nowrap'})
+            //.css({'visibility': 'hidden'})
+            .appendTo($('body')),
+      w = o.width();
+  //o.remove();<<>
+  return w;
+}
+//console.log(getTextWidthDOM("Click here to access the Storysoft Websit",'bold 50px arial'));  // just 86 (sub-pixel 
+</script>
+  <br>
+<footer> <b> 
+  <div style="text-align=center">
+ <a href="https://storysoft.io">Click here to access the Storysoft Websit</a>
+ </div>
+    </b>
+  </footer>
+  
+  </body>
+<!-- partial -->
+  
+</body>
+</html>
